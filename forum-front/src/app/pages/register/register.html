@@ -1,0 +1,45 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">📝</div>
+    <h1>Créer un compte</h1>
+    <p class="muted center">
+      Réservé aux étudiants et enseignants présents dans les registres de l'ISET.
+    </p>
+
+    <form (ngSubmit)="submit()">
+      <label for="type">Je suis</label>
+      <select id="type" name="type" [ngModel]="type()" (ngModelChange)="type.set($event)">
+        <option value="ETUDIANT">Étudiant</option>
+        <option value="ENSEIGNANT">Enseignant</option>
+      </select>
+
+      <label for="registryId">{{ idLabel() }}</label>
+      <input id="registryId" name="registryId" required
+             [ngModel]="registryId()" (ngModelChange)="registryId.set($event)" />
+
+      <label for="fullName">Nom complet</label>
+      <input id="fullName" name="fullName" required
+             [ngModel]="fullName()" (ngModelChange)="fullName.set($event)" />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required
+             [ngModel]="email()" (ngModelChange)="email.set($event)" />
+
+      <label for="password">Mot de passe (8 caractères minimum)</label>
+      <input id="password" name="password" type="password" required minlength="8"
+             [ngModel]="password()" (ngModelChange)="password.set($event)" />
+
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+
+      <button class="btn btn-primary full" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Création...' : 'Créer mon compte' }}
+      </button>
+    </form>
+
+    <p class="muted center">
+      Déjà inscrit ? <a routerLink="/login">Se connecter</a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,160 @@
+/* ISET Connect : thème vert/bleu, cartes, formulaires, responsive */
+:root {
+  --primary: #087d75;
+  --primary-dark: #075f59;
+  --dark: #123f42;
+  --bg: #f4f7f9;
+  --card: #ffffff;
+  --line: #e0e7ea;
+  --text: #183036;
+  --muted: #687b85;
+  --danger: #b3261e;
+  font-family: system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3 { margin-top: 0; }
+h1 { font-size: 24px; }
+h2 { font-size: 19px; }
+h3 { font-size: 16px; }
+p { line-height: 1.55; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
+
+/* ---------- barre de navigation ---------- */
+.navbar {
+  background: var(--dark);
+  color: #fff;
+  padding: 14px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.navbar a { color: #fff; }
+.brand { font-size: 21px; font-weight: 700; white-space: nowrap; }
+.navlinks { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.who { display: flex; align-items: center; gap: 8px; }
+
+.wrapper { max-width: 1240px; margin: 0 auto; padding: 26px 18px; }
+
+/* ---------- cartes ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.035);
+}
+.card + .card { margin-top: 18px; }
+.top-space { margin-top: 18px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; margin: 2px 0; }
+.center { text-align: center; }
+
+/* ---------- formulaires ---------- */
+form { display: flex; flex-direction: column; gap: 11px; }
+label { font-size: 14px; font-weight: 600; }
+input, textarea, select {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #cbd5d9;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+input:focus, textarea:focus, select:focus { outline: 2px solid #64bab1; border-color: var(--primary); }
+textarea { resize: vertical; }
+.checkbox-line { display: flex; align-items: center; gap: 8px; font-weight: 400; }
+.checkbox-line input { width: auto; }
+
+/* ---------- boutons ---------- */
+.btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-outline { background: transparent; border-color: #b3d6d2; color: #fff; }
+.btn-outline-dark { background: #fff; border-color: var(--primary); color: var(--primary); }
+.btn-danger { background: #fff; border-color: var(--danger); color: var(--danger); margin-top: 10px; }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.full { width: 100%; }
+
+/* ---------- messages ---------- */
+.error, .success { padding: 11px 14px; border-radius: 8px; overflow-wrap: anywhere; margin: 0 0 14px; }
+.error { background: #fff0ee; color: #a33026; }
+.success { background: #e8f5ee; color: #176744; }
+
+/* ---------- authentification ---------- */
+.auth-page { display: flex; justify-content: center; padding: 24px 0; }
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+.auth-logo { font-size: 42px; text-align: center; }
+.auth-card h1 { text-align: center; }
+
+/* ---------- forum ---------- */
+.forum-layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 20px; align-items: start; }
+.sidebar { position: sticky; top: 16px; }
+.main-column { min-width: 0; }
+
+.community-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 12px;
+  margin-bottom: 4px;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.community-item:hover { background: #eff6f5; }
+.community-item.active { background: #dcefeb; color: var(--primary-dark); font-weight: 700; }
+
+.key-box { background: #fff8e1; border: 1px solid #f0dd9a; border-radius: 8px; padding: 10px 14px; margin: 10px 0 0; }
+code { background: #eef2f3; padding: 2px 7px; border-radius: 5px; font-weight: 700; letter-spacing: 1px; }
+
+.post, .comment, .resource { padding: 18px 0; border-bottom: 1px solid #edf0f1; }
+.post:last-child, .comment:last-child, .resource:last-child { border-bottom: 0; }
+.post-author { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: #d7ece9; color: var(--primary-dark);
+  display: flex; align-items: center; justify-content: center; font-weight: 700; flex: none;
+}
+.post-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.badge { display: inline-block; background: #e9eef0; color: #44565f; font-size: 12px; padding: 3px 8px; border-radius: 6px; margin-left: 8px; }
+.badge-teacher { background: #e4f0ff; color: #21578d; }
+.badge-answer { background: #e3f5e9; color: #176744; }
+.teacher-comment { background: #f4faf6; margin: 0 -22px; padding-left: 22px; padding-right: 22px; }
+
+/* ---------- petits écrans ---------- */
+@media (max-width: 800px) {
+  .forum-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .wrapper { padding: 16px 10px; }
+  .card, .auth-card { padding: 16px; }
+  .teacher-comment { margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+}

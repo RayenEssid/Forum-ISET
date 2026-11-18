@@ -1,0 +1,133 @@
+@if (message()) {
+  <p class="success">{{ message() }}</p>
+}
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
+<div class="forum-layout">
+  <!-- ============ COLONNE GAUCHE : COMMUNAUTES ============ -->
+  <aside class="sidebar card">
+    <h2>Communautés</h2>
+
+    @for (c of communities(); track c.id) {
+      <button type="button" class="community-item" [class.active]="selectedId() === c.id"
+              (click)="select(c.id)">
+        {{ c.privateCommunity ? '🔒' : '🌐' }} {{ c.name }}
+      </button>
+    } @empty {
+      <p class="muted">Aucune communauté. Crées-en une !</p>
+    }
+
+    <hr />
+    <h3>Nouvelle communauté</h3>
+    <form (ngSubmit)="createCommunity()">
+      <input name="communityName" required maxlength="120" placeholder="Ex : L3 DSI"
+             [ngModel]="newCommunityName()" (ngModelChange)="newCommunityName.set($event)" />
+      <label class="checkbox-line">
+        <input type="checkbox" name="communityPrivate"
+               [ngModel]="newCommunityPrivate()" (ngModelChange)="newCommunityPrivate.set($event)" />
+        Privée (accès par clé)
+      </label>
+      <button class="btn btn-primary full" type="submit">Créer</button>
+    </form>
+
+    <hr />
+    <h3>Rejoindre une communauté privée</h3>
+    <form (ngSubmit)="joinCommunity()">
+      <input name="joinId" required inputmode="numeric" placeholder="ID de la communauté"
+             [ngModel]="joinId()" (ngModelChange)="joinId.set($event)" />
+      <input name="joinKey" required placeholder="Clé d'accès"
+             [ngModel]="joinKey()" (ngModelChange)="joinKey.set($event)" />
+      <button class="btn btn-outline-dark full" type="submit">Rejoindre</button>
+    </form>
+  </aside>
+
+  <!-- ============ COLONNE PRINCIPALE ============ -->
+  <div class="main-column">
+    @if (selected(); as c) {
+      <section class="card">
+        <h1>{{ c.privateCommunity ? '🔒' : '🌐' }} {{ c.name }}</h1>
+        <p class="muted">
+          Communauté {{ c.privateCommunity ? 'privée' : 'publique' }} · ID {{ c.id }} · créée par {{ c.ownerName }}
+        </p>
+        @if (c.key) {
+          <p class="key-box">
+            Clé d'accès à partager : <code>{{ c.key }}</code> (ID {{ c.id }})
+          </p>
+        }
+      </section>
+
+      <!-- Poser une question -->
+      <section class="card">
+        <h2>Poser une question</h2>
+        <form (ngSubmit)="publish()">
+          <input name="postTitle" required maxlength="180" placeholder="Titre de votre question"
+                 [ngModel]="postTitle()" (ngModelChange)="postTitle.set($event)" />
+          <textarea name="postContent" required rows="4" placeholder="Expliquez votre question..."
+                    [ngModel]="postContent()" (ngModelChange)="postContent.set($event)"></textarea>
+          <button class="btn btn-primary" type="submit">Publier</button>
+        </form>
+      </section>
+
+      <!-- Liste des publications -->
+      <section class="card">
+        <h2>Publications</h2>
+        @for (p of publications(); track p.id) {
+          <article class="post">
+            <div class="post-author">
+              <span class="avatar">{{ p.authorName.charAt(0) }}</span>
+              <div>
+                <strong>{{ p.authorName }}</strong>
+                <span class="badge" [class.badge-teacher]="p.authorRole === 'ENSEIGNANT'">{{ roleLabel(p.authorRole) }}</span>
+                <p class="muted small">{{ p.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
+            <h3>{{ p.title }}</h3>
+            <p class="post-body">{{ p.content }}</p>
+            <a [routerLink]="['/posts', p.id]">💬 {{ p.nbCommentaires }} réponse(s) · Ouvrir</a>
+          </article>
+        } @empty {
+          <p class="muted">Aucune publication dans cette communauté.</p>
+        }
+      </section>
+
+      <!-- Ressources pédagogiques -->
+      <section class="card">
+        <h2>Cours et ressources</h2>
+        <form (ngSubmit)="shareResource()">
+          <input name="resTitle" required maxlength="180" placeholder="Titre du cours"
+                 [ngModel]="resTitle()" (ngModelChange)="resTitle.set($event)" />
+          <input name="resModule" placeholder="Module (Java, UML, Réseaux...)"
+                 [ngModel]="resModule()" (ngModelChange)="resModule.set($event)" />
+          <textarea name="resDescription" rows="2" placeholder="Description"
+                    [ngModel]="resDescription()" (ngModelChange)="resDescription.set($event)"></textarea>
+          <input name="resAttachment" required placeholder="https://.../cours.pdf"
+                 [ngModel]="resAttachment()" (ngModelChange)="resAttachment.set($event)" />
+          <button class="btn btn-primary" type="submit">Partager le cours</button>
+        </form>
+        <hr />
+        @for (r of resources(); track r.id) {
+          <article class="resource">
+            <strong>📚 {{ r.title }}</strong>
+            @if (r.module) {
+              <span class="badge">{{ r.module }}</span>
+            }
+            @if (r.description) {
+              <p>{{ r.description }}</p>
+            }
+            <p class="muted small">Partagé par {{ r.authorName }} · {{ r.createdAt | date: 'dd/MM/yyyy' }}</p>
+            <a [href]="r.attachment" target="_blank" rel="noopener noreferrer">Ouvrir le lien</a>
+          </article>
+        } @empty {
+          <p class="muted">Aucune ressource partagée.</p>
+        }
+      </section>
+    } @else {
+      <section class="card">
+        <h2>Bienvenue sur ISET Connect</h2>
+        <p>Crée une communauté ou rejoins-en une avec sa clé pour commencer à publier.</p>
+      </section>
+    }
+  </div>
+</div>

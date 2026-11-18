@@ -1,0 +1,25 @@
+<header class="navbar">
+  <a class="brand" routerLink="/home">🎓 ISET Connect</a>
+
+  <nav class="navlinks">
+    @if (auth.isLoggedIn()) {
+      <a routerLink="/home">Forum</a>
+
+      @if (auth.user(); as u) {
+        <span class="who">
+          {{ u.fullName }}
+          <span class="badge" [class.badge-teacher]="u.role === 'ENSEIGNANT'">{{ roleLabel(u.role) }}</span>
+        </span>
+      }
+
+      <button class="btn btn-outline" type="button" (click)="auth.logout()">Déconnexion</button>
+    } @else {
+      <a routerLink="/login">Connexion</a>
+      <a routerLink="/register">Inscription</a>
+    }
+  </nav>
+</header>
+
+<main class="wrapper">
+  <router-outlet />
+</main>

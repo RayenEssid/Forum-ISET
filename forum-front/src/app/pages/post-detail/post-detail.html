@@ -1,0 +1,60 @@
+<a routerLink="/home">← Retour au forum</a>
+
+@if (error()) {
+  <p class="error top-space">{{ error() }}</p>
+}
+
+@if (post(); as p) {
+  <section class="card top-space">
+    <div class="post-author">
+      <span class="avatar">{{ p.authorName.charAt(0) }}</span>
+      <div>
+        <strong>{{ p.authorName }}</strong>
+        <span class="badge" [class.badge-teacher]="p.authorRole === 'ENSEIGNANT'">{{ roleLabel(p.authorRole) }}</span>
+        <p class="muted small">{{ p.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+    </div>
+    <h1>{{ p.title }}</h1>
+    <p class="post-body">{{ p.content }}</p>
+
+    @if (canDelete()) {
+      <button type="button" class="btn btn-danger" (click)="deletePost()">Supprimer la publication</button>
+    }
+  </section>
+
+  <section class="card top-space">
+    <h2>Réponses ({{ commentaires().length }})</h2>
+
+    @for (c of commentaires(); track c.id) {
+      <article class="comment" [class.teacher-comment]="c.reponseEnseignant">
+        <div class="post-author">
+          <span class="avatar">{{ c.authorName.charAt(0) }}</span>
+          <div>
+            <strong>{{ c.authorName }}</strong>
+            <span class="badge" [class.badge-teacher]="c.authorRole === 'ENSEIGNANT'">{{ roleLabel(c.authorRole) }}</span>
+            @if (c.reponseEnseignant) {
+              <span class="badge badge-answer">✔ Réponse de l'enseignant</span>
+            }
+            <p class="muted small">{{ c.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+        </div>
+        <p class="post-body">{{ c.contenu }}</p>
+      </article>
+    } @empty {
+      <p class="muted">Aucune réponse pour le moment.</p>
+    }
+
+    @if (message()) {
+      <p class="success">{{ message() }}</p>
+    }
+
+    <form (ngSubmit)="addCommentaire()">
+      <label for="contenu">Ajouter une réponse</label>
+      <textarea id="contenu" name="contenu" required rows="4" placeholder="Écris ta réponse..."
+                [ngModel]="contenu()" (ngModelChange)="contenu.set($event)"></textarea>
+      <button class="btn btn-primary" type="submit">Envoyer</button>
+    </form>
+  </section>
+} @else if (!error()) {
+  <p class="muted top-space">Chargement...</p>
+}
